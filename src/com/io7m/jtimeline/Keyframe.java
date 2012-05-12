@@ -2,13 +2,19 @@ package com.io7m.jtimeline;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.Immutable;
 
 import com.io7m.jaux.Constraints;
 import com.io7m.jaux.Constraints.ConstraintError;
 import com.io7m.jaux.functional.Pair;
 import com.io7m.jaux.functional.Procedure;
 
-public final class Keyframe
+/**
+ * Type representing a time in frames, an interpolation type, a value, and
+ * possibly a callback to be called when the given time is reached.
+ */
+
+@Immutable public final class Keyframe
 {
   private final double                                                value;
   private final long                                                  time;
@@ -68,15 +74,27 @@ public final class Keyframe
     return true;
   }
 
+  /**
+   * Return the interpolation type of the keyframe.
+   */
+
   public @Nonnull InterpolationType getInterpolationType()
   {
     return this.interpolation;
   }
 
+  /**
+   * Return the time in frames of the keyframe.
+   */
+
   public long getTime()
   {
     return this.time;
   }
+
+  /**
+   * Return the value of the keyframe.
+   */
 
   public double getValue()
   {
@@ -96,6 +114,16 @@ public final class Keyframe
     result = (prime * result) + (int) (temp ^ (temp >>> 32));
     return result;
   }
+
+  /**
+   * Execute the callback for the keyframe, if any. This function is called by
+   * the {@link Timeline#step()} function.
+   * 
+   * @param i
+   *          The interpolable value passed to the keyframe.
+   * @throws ConstraintError
+   *           Iff <code>i == null</code>.
+   */
 
   public void runCallback(
     final @Nonnull Interpolable i)

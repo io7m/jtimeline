@@ -15,6 +15,10 @@ import javax.annotation.Nonnull;
 import com.io7m.jaux.Constraints;
 import com.io7m.jaux.Constraints.ConstraintError;
 
+/**
+ * Type representing a generic timeline.
+ */
+
 public final class Timeline
 {
   private static final class State
@@ -74,7 +78,6 @@ public final class Timeline
     }
 
     private final @Nonnull SortedMap<Long, Keyframe> keyframes;
-
     private final @Nonnull Interpolable              interpolable;
 
     State(
@@ -192,27 +195,49 @@ public final class Timeline
     return s.toString();
   }
 
+  private boolean                                     time_loop_enabled;
   private long                                        time_current;
+  private long                                        time_loop;
   private final @Nonnull HashMap<String, State>       interpolables;
   private final @Nonnull HashMap<String, Set<String>> interpolable_groups;
 
   public Timeline()
   {
+    this.time_loop_enabled = false;
+    this.time_loop = 0;
     this.time_current = 0;
     this.interpolables = new HashMap<String, State>();
     this.interpolable_groups = new HashMap<String, Set<String>>();
   }
+
+  /**
+   * Retrieve the current time in frames for the timeline.
+   */
 
   public long currentTimeGet()
   {
     return this.time_current;
   }
 
+  /**
+   * Set the current time in frames for the timeline.
+   */
+
   public void currentTimeSet(
     final long time)
   {
     this.time_current = time;
   }
+
+  /**
+   * Retrieve the set of {@link Interpolable} values added to the timeline
+   * with group <code>group</code>.
+   * 
+   * @param group
+   *          The name of the group.
+   * @throws ConstraintError
+   *           Iff <code>group == null</code>.
+   */
 
   public ArrayList<Interpolable> getGroup(
     final @Nonnull String group)
@@ -230,6 +255,23 @@ public final class Timeline
 
     return is;
   }
+
+  /**
+   * Add the {@link Interpolable} value <code>i</code> to the timeline. A
+   * value must be added before keyframes can be assigned.
+   * 
+   * @param i
+   *          The {@link Interpolable} value.
+   * @throws ConstraintError
+   *           Iff any of the following conditions hold:
+   *           <ul>
+   *           <li><code>i == null</code></li>
+   *           <li><code>i</code> violates contracts on any of the
+   *           {@link Interpolable} methods by, for example, returning
+   *           <code>null</code> for
+   *           {@link Interpolable#interpolableGetName()}</li>
+   *           </ul>
+   */
 
   public void interpolableAdd(
     final @Nonnull Interpolable i)
@@ -258,6 +300,28 @@ public final class Timeline
     }
   }
 
+  /**
+   * Add the keyframe <code>k</code> for the {@link Interpolable} value
+   * <code>i</code>. <code>i</code> must have been previously added to the
+   * timeline with {@link Timeline#interpolableAdd(Interpolable)}.
+   * 
+   * @param i
+   * @param k
+   * @throws ConstraintError
+   *           Iff any of the following conditions hold:
+   *           <ul>
+   *           <li><code>i == null</code></li>
+   *           <li><code>k == null</code></li>
+   *           <li><code>i</code> violates contracts on any of the
+   *           {@link Interpolable} methods by, for example, returning
+   *           <code>null</code> for
+   *           {@link Interpolable#interpolableGetName()}</li>
+   *           <li><code>i</code> was not previously added to the timeline</li>
+   *           <li>A keyframe for <code>i</code> already exists at the frame
+   *           given by <code>k</code></li>
+   *           </ul>
+   */
+
   public void keyframeAdd(
     final @Nonnull Interpolable i,
     final @Nonnull Keyframe k)
@@ -276,6 +340,68 @@ public final class Timeline
 
     state.keyframeAdd(k);
   }
+
+  /**
+   * Retrieve the frame at which the timeline will rewind to frame
+   * <code>0</code>, iff looping is enabled.
+   * 
+   * @see #loopIsEnabled()
+   * @see #loopSetEnabled(long)
+   * @see #loopSetDisabled()
+   */
+
+  public long loopGetTime()
+  {
+    return this.time_loop;
+  }
+
+  /**
+   * Return <code>true</code> if looping is currently enabled.
+   * 
+   * @see #loopSetEnabled(long)
+   * @see #loopSetDisabled()
+   */
+
+  public boolean loopIsEnabled()
+  {
+    return this.time_loop_enabled;
+  }
+
+  /**
+   * Disable looping.
+   * 
+   * @see #loopSetEnabled(long)
+   */
+
+  public void loopSetDisabled()
+  {
+    this.time_loop_enabled = false;
+  }
+
+  /**
+   * Enable looping for the given timeline. The timeline will reset to frame
+   * <code>0</code> after frame <code>frame</code> is reached.
+   * 
+   * @see #loopIsEnabled()
+   * @see #loopGetTime()
+   * @see #loopSetDisabled()
+   */
+
+  public void loopSetEnabled(
+    final long frame)
+  {
+    this.time_loop_enabled = true;
+    this.time_loop = frame;
+  }
+
+  /**
+   * Step the timeline forward by one frame. The function executes all
+   * keyframes for the current time, and then advances the time forward by one
+   * frame.
+   * 
+   * @throws ConstraintError
+   *           Iff an internal constraint error occurs.
+   */
 
   public void step()
     throws ConstraintError
