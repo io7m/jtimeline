@@ -16,10 +16,10 @@ import com.io7m.jaux.functional.Procedure;
 
 @Immutable public final class Keyframe
 {
-  private final double                                                value;
-  private final long                                                  time;
-  private final @Nonnull InterpolationType                            interpolation;
-  private final @CheckForNull Procedure<Pair<Interpolable, Keyframe>> callback;
+  private final double                                                          value;
+  private final long                                                            time;
+  private final @Nonnull InterpolationType                                      interpolation;
+  private final @CheckForNull Procedure<Pair<InterpolableScalarReal, Keyframe>> callback;
 
   public Keyframe(
     final @Nonnull InterpolationType interpolation,
@@ -38,7 +38,7 @@ import com.io7m.jaux.functional.Procedure;
     final @Nonnull InterpolationType interpolation,
     final long time,
     final double value,
-    final @Nonnull Procedure<Pair<Interpolable, Keyframe>> callback)
+    final @Nonnull Procedure<Pair<InterpolableScalarReal, Keyframe>> callback)
     throws ConstraintError
   {
     this.interpolation =
@@ -126,13 +126,13 @@ import com.io7m.jaux.functional.Procedure;
    */
 
   public void runCallback(
-    final @Nonnull Interpolable i)
+    final @Nonnull InterpolableScalarReal i)
     throws ConstraintError
   {
     Constraints.constrainNotNull(i, "Interpolable");
 
     if (this.callback != null) {
-      this.callback.call(new Pair<Interpolable, Keyframe>(i, this));
+      this.callback.call(new Pair<InterpolableScalarReal, Keyframe>(i, this));
     }
   }
 

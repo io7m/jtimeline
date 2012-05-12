@@ -6,14 +6,14 @@ import org.junit.Test;
 import com.io7m.jaux.Constraints.ConstraintError;
 import com.io7m.jaux.functional.Pair;
 import com.io7m.jaux.functional.Procedure;
-import com.io7m.jtimeline.Interpolable;
+import com.io7m.jtimeline.InterpolableScalarReal;
 import com.io7m.jtimeline.InterpolationType;
 import com.io7m.jtimeline.Keyframe;
 
 public class KeyframeTest
 {
   private static class CallCheck implements
-    Procedure<Pair<Interpolable, Keyframe>>
+    Procedure<Pair<InterpolableScalarReal, Keyframe>>
   {
     int calls = 0;
 
@@ -23,7 +23,7 @@ public class KeyframeTest
     }
 
     @Override public void call(
-      final Pair<Interpolable, Keyframe> x)
+      final Pair<InterpolableScalarReal, Keyframe> x)
     {
       this.calls = this.calls + 1;
     }
@@ -34,7 +34,7 @@ public class KeyframeTest
     }
   }
 
-  private static class ITrivial implements Interpolable
+  private static class ITrivial implements InterpolableScalarReal
   {
     public ITrivial()
     {

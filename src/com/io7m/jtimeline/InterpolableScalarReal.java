@@ -6,7 +6,7 @@ import javax.annotation.Nonnull;
  * Interface representing a scalar value that can be interpolated.
  */
 
-public interface Interpolable
+public interface InterpolableScalarReal
 {
   /**
    * Retrieve the current value.
@@ -22,7 +22,7 @@ public interface Interpolable
    * qualified name of the Java package in which the interpolable value
    * resides as the group name.
    * 
-   * @see Interpolable#interpolableGetID()
+   * @see InterpolableScalarReal#interpolableGetID()
    */
 
   @Nonnull String interpolableGetGroup();
@@ -33,8 +33,8 @@ public interface Interpolable
    * same type/class. An interpolable value is uniquely identified by the
    * concatenation of the group name, name, and ID.
    * 
-   * @see Interpolable#interpolableGetGroup()
-   * @see Interpolable#interpolableGetName()
+   * @see InterpolableScalarReal#interpolableGetGroup()
+   * @see InterpolableScalarReal#interpolableGetName()
    */
 
   long interpolableGetID();
@@ -42,7 +42,7 @@ public interface Interpolable
   /**
    * Retrieve the name of the interpolable value.
    * 
-   * @see Interpolable#interpolableGetID()
+   * @see InterpolableScalarReal#interpolableGetID()
    */
 
   @Nonnull String interpolableGetName();
@@ -53,8 +53,8 @@ public interface Interpolable
    * range <code>[interpolableMinimum() .. interpolableMaximum()]</code>
    * inclusive before being assigned with <code>interpolableSet()</code>.
    * 
-   * @see Interpolable#interpolableMinimum()
-   * @see Interpolable#interpolableSet(double)
+   * @see InterpolableScalarReal#interpolableMinimum()
+   * @see InterpolableScalarReal#interpolableSet(double)
    */
 
   double interpolableMaximum();
@@ -65,8 +65,8 @@ public interface Interpolable
    * range <code>[interpolableMinimum() .. interpolableMaximum()]</code>
    * inclusive before being assigned with <code>interpolableSet()</code>.
    * 
-   * @see Interpolable#interpolableMaximum()
-   * @see Interpolable#interpolableSet(double)
+   * @see InterpolableScalarReal#interpolableMaximum()
+   * @see InterpolableScalarReal#interpolableSet(double)
    */
 
   double interpolableMinimum();

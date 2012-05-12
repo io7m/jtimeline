@@ -14,14 +14,14 @@ import com.io7m.jaux.Constraints.ConstraintError;
 import com.io7m.jaux.functional.Function;
 import com.io7m.jaux.functional.Pair;
 import com.io7m.jaux.functional.Procedure;
-import com.io7m.jtimeline.Interpolable;
+import com.io7m.jtimeline.InterpolableScalarReal;
 import com.io7m.jtimeline.InterpolationType;
 import com.io7m.jtimeline.Keyframe;
 import com.io7m.jtimeline.Timeline;
 
 public class TimelineTest
 {
-  private static class IGroup implements Interpolable
+  private static class IGroup implements InterpolableScalarReal
   {
     private static final AtomicLong id_pool;
     private double                  value = 0.0;
@@ -76,7 +76,7 @@ public class TimelineTest
     }
   }
 
-  private static class INullGroup implements Interpolable
+  private static class INullGroup implements InterpolableScalarReal
   {
     private static final AtomicLong id_pool;
     private double                  value = 0.0;
@@ -128,7 +128,7 @@ public class TimelineTest
     }
   }
 
-  private static class INullName implements Interpolable
+  private static class INullName implements InterpolableScalarReal
   {
     private static final AtomicLong id_pool;
     private double                  value = 0.0;
@@ -180,7 +180,7 @@ public class TimelineTest
     }
   }
 
-  private static class ISimple implements Interpolable
+  private static class ISimple implements InterpolableScalarReal
   {
     private static final AtomicLong id_pool;
     private double                  value = 0.0;
@@ -238,7 +238,7 @@ public class TimelineTest
     }
   }
 
-  private static class ITrivial implements Interpolable
+  private static class ITrivial implements InterpolableScalarReal
   {
     private static final AtomicLong id_pool;
     private double                  value = 0.0;
@@ -291,7 +291,7 @@ public class TimelineTest
   }
 
   private static final class KCallCounter implements
-    Procedure<Pair<Interpolable, Keyframe>>
+    Procedure<Pair<InterpolableScalarReal, Keyframe>>
   {
     private int called = 0;
 
@@ -301,7 +301,7 @@ public class TimelineTest
     }
 
     @Override public void call(
-      final Pair<Interpolable, Keyframe> pair)
+      final Pair<InterpolableScalarReal, Keyframe> pair)
     {
       this.called = this.called + 1;
     }
@@ -374,17 +374,17 @@ public class TimelineTest
     timeline.interpolableAdd(ig1s0);
     timeline.interpolableAdd(ig1s1);
 
-    final ArrayList<Interpolable> g0 = timeline.getGroup("group0");
-    final ArrayList<Interpolable> g1 = timeline.getGroup("group1");
+    final ArrayList<InterpolableScalarReal> g0 = timeline.getGroup("group0");
+    final ArrayList<InterpolableScalarReal> g1 = timeline.getGroup("group1");
 
     Assert.assertEquals(3, g0.size());
     Assert.assertEquals(2, g1.size());
 
     Assert.assertTrue(TimelineTest.exists(
       g0,
-      new Function<Interpolable, Boolean>() {
+      new Function<InterpolableScalarReal, Boolean>() {
         @SuppressWarnings("boxing") @Override public Boolean call(
-          final Interpolable i)
+          final InterpolableScalarReal i)
         {
           return i.interpolableGetName().equals("g0-name0")
             && i.interpolableGetGroup().equals("group0");
@@ -393,9 +393,9 @@ public class TimelineTest
 
     Assert.assertTrue(TimelineTest.exists(
       g0,
-      new Function<Interpolable, Boolean>() {
+      new Function<InterpolableScalarReal, Boolean>() {
         @SuppressWarnings("boxing") @Override public Boolean call(
-          final Interpolable i)
+          final InterpolableScalarReal i)
         {
           return i.interpolableGetName().equals("g0-name1")
             && i.interpolableGetGroup().equals("group0");
@@ -404,9 +404,9 @@ public class TimelineTest
 
     Assert.assertTrue(TimelineTest.exists(
       g0,
-      new Function<Interpolable, Boolean>() {
+      new Function<InterpolableScalarReal, Boolean>() {
         @SuppressWarnings("boxing") @Override public Boolean call(
-          final Interpolable i)
+          final InterpolableScalarReal i)
         {
           return i.interpolableGetName().equals("g0-name2")
             && i.interpolableGetGroup().equals("group0");
@@ -415,9 +415,9 @@ public class TimelineTest
 
     Assert.assertTrue(TimelineTest.exists(
       g1,
-      new Function<Interpolable, Boolean>() {
+      new Function<InterpolableScalarReal, Boolean>() {
         @SuppressWarnings("boxing") @Override public Boolean call(
-          final Interpolable i)
+          final InterpolableScalarReal i)
         {
           return i.interpolableGetName().equals("g1-name0")
             && i.interpolableGetGroup().equals("group1");
@@ -426,9 +426,9 @@ public class TimelineTest
 
     Assert.assertTrue(TimelineTest.exists(
       g1,
-      new Function<Interpolable, Boolean>() {
+      new Function<InterpolableScalarReal, Boolean>() {
         @SuppressWarnings("boxing") @Override public Boolean call(
-          final Interpolable i)
+          final InterpolableScalarReal i)
         {
           return i.interpolableGetName().equals("g1-name1")
             && i.interpolableGetGroup().equals("group1");
@@ -483,9 +483,9 @@ public class TimelineTest
           InterpolationType.INTERPOLATE_LINEAR,
           0,
           0.5,
-          new Procedure<Pair<Interpolable, Keyframe>>() {
+          new Procedure<Pair<InterpolableScalarReal, Keyframe>>() {
             @Override public void call(
-              final Pair<Interpolable, Keyframe> x)
+              final Pair<InterpolableScalarReal, Keyframe> x)
             {
               // TODO Auto-generated method stub
             }
@@ -1533,9 +1533,9 @@ public class TimelineTest
           InterpolationType.INTERPOLATE_LINEAR,
           0,
           0.5,
-          new Procedure<Pair<Interpolable, Keyframe>>() {
+          new Procedure<Pair<InterpolableScalarReal, Keyframe>>() {
             @Override public void call(
-              final Pair<Interpolable, Keyframe> x)
+              final Pair<InterpolableScalarReal, Keyframe> x)
             {
               // TODO Auto-generated method stub
             }

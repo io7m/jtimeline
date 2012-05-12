@@ -78,16 +78,16 @@ public final class Timeline
     }
 
     private final @Nonnull SortedMap<Long, Keyframe> keyframes;
-    private final @Nonnull Interpolable              interpolable;
+    private final @Nonnull InterpolableScalarReal    interpolable;
 
     State(
-      final @Nonnull Interpolable i)
+      final @Nonnull InterpolableScalarReal i)
     {
       this.interpolable = i;
       this.keyframes = new TreeMap<Long, Keyframe>();
     }
 
-    @Nonnull Interpolable getInterpolable()
+    @Nonnull InterpolableScalarReal getInterpolable()
     {
       return this.interpolable;
     }
@@ -174,7 +174,7 @@ public final class Timeline
   }
 
   private static @Nonnull String makeUniqueID(
-    final @Nonnull Interpolable i)
+    final @Nonnull InterpolableScalarReal i)
     throws ConstraintError
   {
     Constraints.constrainNotNull(i, "Interpolable");
@@ -230,8 +230,8 @@ public final class Timeline
   }
 
   /**
-   * Retrieve the set of {@link Interpolable} values added to the timeline
-   * with group <code>group</code>.
+   * Retrieve the set of {@link InterpolableScalarReal} values added to the
+   * timeline with group <code>group</code>.
    * 
    * @param group
    *          The name of the group.
@@ -239,13 +239,14 @@ public final class Timeline
    *           Iff <code>group == null</code>.
    */
 
-  public ArrayList<Interpolable> getGroup(
+  public ArrayList<InterpolableScalarReal> getGroup(
     final @Nonnull String group)
     throws ConstraintError
   {
     Constraints.constrainNotNull(group, "Group name");
 
-    final ArrayList<Interpolable> is = new ArrayList<Interpolable>();
+    final ArrayList<InterpolableScalarReal> is =
+      new ArrayList<InterpolableScalarReal>();
     final Set<String> names = this.interpolable_groups.get(group);
 
     for (final String name : names) {
@@ -257,24 +258,24 @@ public final class Timeline
   }
 
   /**
-   * Add the {@link Interpolable} value <code>i</code> to the timeline. A
-   * value must be added before keyframes can be assigned.
+   * Add the {@link InterpolableScalarReal} value <code>i</code> to the
+   * timeline. A value must be added before keyframes can be assigned.
    * 
    * @param i
-   *          The {@link Interpolable} value.
+   *          The {@link InterpolableScalarReal} value.
    * @throws ConstraintError
    *           Iff any of the following conditions hold:
    *           <ul>
    *           <li><code>i == null</code></li>
    *           <li><code>i</code> violates contracts on any of the
-   *           {@link Interpolable} methods by, for example, returning
-   *           <code>null</code> for
-   *           {@link Interpolable#interpolableGetName()}</li>
+   *           {@link InterpolableScalarReal} methods by, for example,
+   *           returning <code>null</code> for
+   *           {@link InterpolableScalarReal#interpolableGetName()}</li>
    *           </ul>
    */
 
   public void interpolableAdd(
-    final @Nonnull Interpolable i)
+    final @Nonnull InterpolableScalarReal i)
     throws ConstraintError
   {
     Constraints.constrainNotNull(i, "Interpolable");
@@ -301,9 +302,10 @@ public final class Timeline
   }
 
   /**
-   * Add the keyframe <code>k</code> for the {@link Interpolable} value
-   * <code>i</code>. <code>i</code> must have been previously added to the
-   * timeline with {@link Timeline#interpolableAdd(Interpolable)}.
+   * Add the keyframe <code>k</code> for the {@link InterpolableScalarReal}
+   * value <code>i</code>. <code>i</code> must have been previously added to
+   * the timeline with
+   * {@link Timeline#interpolableAdd(InterpolableScalarReal)}.
    * 
    * @param i
    * @param k
@@ -313,9 +315,9 @@ public final class Timeline
    *           <li><code>i == null</code></li>
    *           <li><code>k == null</code></li>
    *           <li><code>i</code> violates contracts on any of the
-   *           {@link Interpolable} methods by, for example, returning
-   *           <code>null</code> for
-   *           {@link Interpolable#interpolableGetName()}</li>
+   *           {@link InterpolableScalarReal} methods by, for example,
+   *           returning <code>null</code> for
+   *           {@link InterpolableScalarReal#interpolableGetName()}</li>
    *           <li><code>i</code> was not previously added to the timeline</li>
    *           <li>A keyframe for <code>i</code> already exists at the frame
    *           given by <code>k</code></li>
@@ -323,7 +325,7 @@ public final class Timeline
    */
 
   public void keyframeAdd(
-    final @Nonnull Interpolable i,
+    final @Nonnull InterpolableScalarReal i,
     final @Nonnull Keyframe k)
     throws ConstraintError
   {
