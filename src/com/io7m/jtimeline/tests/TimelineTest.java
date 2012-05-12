@@ -331,15 +331,15 @@ public class TimelineTest
     final Timeline timeline = new Timeline();
     final IGroup ig0 = new IGroup("one");
     final IGroup ig1 = new IGroup("two");
-    timeline.addInterpolable(ig0);
-    timeline.addInterpolable(ig1);
+    timeline.interpolableAdd(ig0);
+    timeline.interpolableAdd(ig1);
   }
 
   @Test(expected = ConstraintError.class) public void testAddNull()
     throws ConstraintError
   {
     final Timeline timeline = new Timeline();
-    timeline.addInterpolable(null);
+    timeline.interpolableAdd(null);
   }
 
   @Test(expected = ConstraintError.class) public void testAddNullGroup()
@@ -347,7 +347,7 @@ public class TimelineTest
   {
     final Timeline timeline = new Timeline();
     final INullGroup ing = new INullGroup();
-    timeline.addInterpolable(ing);
+    timeline.interpolableAdd(ing);
   }
 
   @Test(expected = ConstraintError.class) public void testAddNullName()
@@ -355,7 +355,7 @@ public class TimelineTest
   {
     final Timeline timeline = new Timeline();
     final INullName inn = new INullName();
-    timeline.addInterpolable(inn);
+    timeline.interpolableAdd(inn);
   }
 
   @Test public void testGetGroups()
@@ -368,11 +368,11 @@ public class TimelineTest
     final ISimple ig1s0 = new ISimple("group1", "g1-name0");
     final ISimple ig1s1 = new ISimple("group1", "g1-name1");
 
-    timeline.addInterpolable(ig0s0);
-    timeline.addInterpolable(ig0s1);
-    timeline.addInterpolable(ig0s2);
-    timeline.addInterpolable(ig1s0);
-    timeline.addInterpolable(ig1s1);
+    timeline.interpolableAdd(ig0s0);
+    timeline.interpolableAdd(ig0s1);
+    timeline.interpolableAdd(ig0s2);
+    timeline.interpolableAdd(ig1s0);
+    timeline.interpolableAdd(ig1s1);
 
     final ArrayList<Interpolable> g0 = timeline.getGroup("group0");
     final ArrayList<Interpolable> g1 = timeline.getGroup("group1");
@@ -454,9 +454,9 @@ public class TimelineTest
     final Keyframe k1 =
       new Keyframe(InterpolationType.INTERPOLATE_LINEAR, 1, 0.5, kc);
 
-    timeline.addInterpolable(it);
-    timeline.addKeyframe(it, k0);
-    timeline.addKeyframe(it, k1);
+    timeline.interpolableAdd(it);
+    timeline.keyframeAdd(it, k0);
+    timeline.keyframeAdd(it, k1);
 
     Assert.assertEquals(0, timeline.currentTimeGet());
     Assert.assertEquals(0, kc.getCalled());
@@ -494,9 +494,9 @@ public class TimelineTest
       Assert.fail(e.getMessage());
     }
 
-    timeline.addInterpolable(it);
-    timeline.addKeyframe(it, k);
-    timeline.addKeyframe(it, k);
+    timeline.interpolableAdd(it);
+    timeline.keyframeAdd(it, k);
+    timeline.keyframeAdd(it, k);
   }
 
   @Test public void testKeyframeInterpExp()
@@ -521,10 +521,10 @@ public class TimelineTest
         0.0,
         counter);
 
-    timeline.addInterpolable(it);
-    timeline.addKeyframe(it, k0);
-    timeline.addKeyframe(it, k10);
-    timeline.addKeyframe(it, k20);
+    timeline.interpolableAdd(it);
+    timeline.keyframeAdd(it, k0);
+    timeline.keyframeAdd(it, k10);
+    timeline.keyframeAdd(it, k20);
 
     Assert.assertEquals(0, counter.getCalled());
 
@@ -721,10 +721,10 @@ public class TimelineTest
     final Keyframe k20 =
       new Keyframe(InterpolationType.INTERPOLATE_LINEAR, 20, 0.0, counter);
 
-    timeline.addInterpolable(it);
-    timeline.addKeyframe(it, k0);
-    timeline.addKeyframe(it, k10);
-    timeline.addKeyframe(it, k20);
+    timeline.interpolableAdd(it);
+    timeline.keyframeAdd(it, k0);
+    timeline.keyframeAdd(it, k10);
+    timeline.keyframeAdd(it, k20);
 
     Assert.assertEquals(0, counter.getCalled());
 
@@ -910,10 +910,10 @@ public class TimelineTest
         0.0,
         counter);
 
-    timeline.addInterpolable(it);
-    timeline.addKeyframe(it, k0);
-    timeline.addKeyframe(it, k10);
-    timeline.addKeyframe(it, k20);
+    timeline.interpolableAdd(it);
+    timeline.keyframeAdd(it, k0);
+    timeline.keyframeAdd(it, k10);
+    timeline.keyframeAdd(it, k20);
 
     Assert.assertEquals(0, counter.getCalled());
 
@@ -1156,10 +1156,10 @@ public class TimelineTest
         0.0,
         counter);
 
-    timeline.addInterpolable(it);
-    timeline.addKeyframe(it, k0);
-    timeline.addKeyframe(it, k10);
-    timeline.addKeyframe(it, k20);
+    timeline.interpolableAdd(it);
+    timeline.keyframeAdd(it, k0);
+    timeline.keyframeAdd(it, k10);
+    timeline.keyframeAdd(it, k20);
 
     Assert.assertEquals(0, counter.getCalled());
 
@@ -1349,10 +1349,10 @@ public class TimelineTest
         0.0,
         counter);
 
-    timeline.addInterpolable(it);
-    timeline.addKeyframe(it, k0);
-    timeline.addKeyframe(it, k10);
-    timeline.addKeyframe(it, k20);
+    timeline.interpolableAdd(it);
+    timeline.keyframeAdd(it, k0);
+    timeline.keyframeAdd(it, k10);
+    timeline.keyframeAdd(it, k20);
 
     Assert.assertEquals(0, counter.getCalled());
 
@@ -1544,7 +1544,7 @@ public class TimelineTest
       Assert.fail(e.getMessage());
     }
 
-    timeline.addKeyframe(it, k);
+    timeline.keyframeAdd(it, k);
   }
 
   @Test public void testKeyframeOneStep()
@@ -1557,8 +1557,8 @@ public class TimelineTest
     final Keyframe k =
       new Keyframe(InterpolationType.INTERPOLATE_LINEAR, 0, 0.5, kc);
 
-    timeline.addInterpolable(it);
-    timeline.addKeyframe(it, k);
+    timeline.interpolableAdd(it);
+    timeline.keyframeAdd(it, k);
 
     Assert.assertEquals(0, timeline.currentTimeGet());
     Assert.assertEquals(0, kc.getCalled());
@@ -1577,8 +1577,8 @@ public class TimelineTest
     final Keyframe k =
       new Keyframe(InterpolationType.INTERPOLATE_LINEAR, 0, 0.5, kc);
 
-    timeline.addInterpolable(it);
-    timeline.addKeyframe(it, k);
+    timeline.interpolableAdd(it);
+    timeline.keyframeAdd(it, k);
 
     Assert.assertEquals(0, timeline.currentTimeGet());
     Assert.assertEquals(0, kc.getCalled());
@@ -1612,7 +1612,7 @@ public class TimelineTest
   {
     final Timeline timeline = new Timeline();
     final ITrivial it = new ITrivial();
-    timeline.addInterpolable(it);
+    timeline.interpolableAdd(it);
 
     Assert.assertEquals(0, timeline.currentTimeGet());
     Assert.assertTrue(0.0 == it.interpolableGet());

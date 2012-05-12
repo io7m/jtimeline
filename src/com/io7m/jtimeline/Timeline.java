@@ -203,7 +203,7 @@ public final class Timeline
     this.interpolable_groups = new HashMap<String, Set<String>>();
   }
 
-  public void addInterpolable(
+  public void interpolableAdd(
     final @Nonnull Interpolable i)
     throws ConstraintError
   {
@@ -230,7 +230,7 @@ public final class Timeline
     }
   }
 
-  public void addKeyframe(
+  public void keyframeAdd(
     final @Nonnull Interpolable i,
     final @Nonnull Keyframe k)
     throws ConstraintError
