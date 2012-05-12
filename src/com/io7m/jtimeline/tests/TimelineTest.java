@@ -1607,6 +1607,49 @@ public class TimelineTest
     Assert.assertEquals(2, kc.getCalled());
   }
 
+  @Test(expected = ConstraintError.class) public void testLoopInvalid()
+    throws ConstraintError
+  {
+    final Timeline timeline = new Timeline();
+    timeline.loopSetEnabled(-1);
+  }
+
+  @Test public void testStepLoop()
+    throws ConstraintError
+  {
+    final Timeline timeline = new Timeline();
+
+    Assert.assertEquals(0, timeline.currentTimeGet());
+    timeline.step();
+    Assert.assertEquals(1, timeline.currentTimeGet());
+    timeline.step();
+    Assert.assertEquals(2, timeline.currentTimeGet());
+    timeline.step();
+
+    timeline.loopSetEnabled(1);
+    Assert.assertEquals(1, timeline.loopGetTime());
+    Assert.assertTrue(timeline.loopIsEnabled());
+
+    timeline.step();
+    Assert.assertEquals(0, timeline.currentTimeGet());
+    timeline.step();
+    Assert.assertEquals(1, timeline.currentTimeGet());
+    timeline.step();
+    Assert.assertEquals(0, timeline.currentTimeGet());
+    timeline.step();
+    Assert.assertEquals(1, timeline.currentTimeGet());
+
+    timeline.loopSetDisabled();
+    Assert.assertFalse(timeline.loopIsEnabled());
+
+    Assert.assertEquals(1, timeline.currentTimeGet());
+    timeline.step();
+    Assert.assertEquals(2, timeline.currentTimeGet());
+    timeline.step();
+    Assert.assertEquals(3, timeline.currentTimeGet());
+    timeline.step();
+  }
+
   @Test public void testStepNothing()
     throws ConstraintError
   {

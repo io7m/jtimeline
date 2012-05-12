@@ -382,7 +382,11 @@ public final class Timeline
 
   /**
    * Enable looping for the given timeline. The timeline will reset to frame
-   * <code>0</code> after frame <code>frame</code> is reached.
+   * <code>0</code> on the subsequent call to {@link Timeline#step()} after
+   * frame <code>frame</code> is reached.
+   * 
+   * @throws ConstraintError
+   *           Iff <code>frame &lt; 0</code>.
    * 
    * @see #loopIsEnabled()
    * @see #loopGetTime()
@@ -391,9 +395,10 @@ public final class Timeline
 
   public void loopSetEnabled(
     final long frame)
+    throws ConstraintError
   {
     this.time_loop_enabled = true;
-    this.time_loop = frame;
+    this.time_loop = Constraints.constrainRange(frame, 0, Long.MAX_VALUE);
   }
 
   /**
@@ -415,6 +420,11 @@ public final class Timeline
       }
     } finally {
       this.time_current = this.time_current + 1;
+      if (this.time_loop_enabled) {
+        if (this.time_current > this.time_loop) {
+          this.time_current = 0;
+        }
+      }
     }
   }
 }
