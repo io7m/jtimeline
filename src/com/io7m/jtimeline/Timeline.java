@@ -203,6 +203,34 @@ public final class Timeline
     this.interpolable_groups = new HashMap<String, Set<String>>();
   }
 
+  public long currentTimeGet()
+  {
+    return this.time_current;
+  }
+
+  public void currentTimeSet(
+    final long time)
+  {
+    this.time_current = time;
+  }
+
+  public ArrayList<Interpolable> getGroup(
+    final @Nonnull String group)
+    throws ConstraintError
+  {
+    Constraints.constrainNotNull(group, "Group name");
+
+    final ArrayList<Interpolable> is = new ArrayList<Interpolable>();
+    final Set<String> names = this.interpolable_groups.get(group);
+
+    for (final String name : names) {
+      final State state = this.interpolables.get(name);
+      is.add(state.getInterpolable());
+    }
+
+    return is;
+  }
+
   public void interpolableAdd(
     final @Nonnull Interpolable i)
     throws ConstraintError
@@ -247,34 +275,6 @@ public final class Timeline
     assert state != null;
 
     state.keyframeAdd(k);
-  }
-
-  public long currentTimeGet()
-  {
-    return this.time_current;
-  }
-
-  public void currentTimeSet(
-    final long time)
-  {
-    this.time_current = time;
-  }
-
-  public ArrayList<Interpolable> getGroup(
-    final @Nonnull String group)
-    throws ConstraintError
-  {
-    Constraints.constrainNotNull(group, "Group name");
-
-    final ArrayList<Interpolable> is = new ArrayList<Interpolable>();
-    final Set<String> names = this.interpolable_groups.get(group);
-
-    for (final String name : names) {
-      final State state = this.interpolables.get(name);
-      is.add(state.getInterpolable());
-    }
-
-    return is;
   }
 
   public void step()
